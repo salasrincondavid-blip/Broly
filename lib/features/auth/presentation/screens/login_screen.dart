@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:broly_1_1/features/auth/presentation/screens/register_screen.dart';
-import 'package:broly_1_1/features/deals/presentation/screens/deals_screen.dart';
+import 'package:broly_1_1/features/home/presentation/screens/main_navigation_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,10 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Simular login exitoso e ir a la página de descuentos
+      // Simular login exitoso e ir a la página principal con navegación
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DealsScreen()),
+        MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
       );
     }
   }
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Icon(
                     Icons.sports_esports_rounded,
                     size: 80,
-                    color: Color(0xFF6C5CE7),
+                    color: Color(0xFF3EEF7C),
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           'Regístrate',
                           style: TextStyle(
-                            color: Color(0xFF00CEC9),
+                            color: Color(0xFF3EEF7C),
                             fontWeight: FontWeight.bold,
                           ),
                         ),

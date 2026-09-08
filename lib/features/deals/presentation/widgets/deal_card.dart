@@ -41,8 +41,8 @@ class DealCard extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) => Container(
                     width: 90,
                     height: 60,
-                    color: Colors.grey[800],
-                    child: const Icon(Icons.videogame_asset, color: Colors.white54),
+                    color: const Color(0xff182f22),
+                    child: const Icon(Icons.videogame_asset, color: Color(0xff3eef7c)),
                   ),
                 ),
               ),
@@ -68,13 +68,13 @@ class DealCard extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF00CEC9),
+                              color: const Color(0xff38ed7a),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               '-${deal.savings}%',
                               style: const TextStyle(
-                                color: Colors.black,
+                                color: Color(0xff06200d),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               ),
@@ -94,7 +94,7 @@ class DealCard extends StatelessWidget {
                         Text(
                           '\$${deal.salePrice}',
                           style: const TextStyle(
-                            color: Color(0xFF6C5CE7),
+                            color: Color(0xff55ee8b),
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -104,7 +104,7 @@ class DealCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white38, size: 16),
+              const Icon(Icons.arrow_forward_ios_rounded, color: Color(0xff3eef7c), size: 16),
             ],
           ),
         ),

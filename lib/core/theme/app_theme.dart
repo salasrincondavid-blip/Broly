@@ -6,44 +6,45 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF6C5CE7),
-        secondary: Color(0xFF00CEC9),
-        surface: Color(0xFF1E1E2E),
-        error: Color(0xFFFF7675),
+        primary: Color(0xFF3EEF7C),
+        secondary: Color(0xFF55EE8B),
+        surface: Color(0xFF0D1B13),
+        error: Color(0xFFFF6B6B),
       ),
-      scaffoldBackgroundColor: const Color(0xFF12121C),
+      scaffoldBackgroundColor: const Color(0xFF09110C),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF1E1E2E),
+        backgroundColor: Color(0xFF0D1B13),
         elevation: 0,
         centerTitle: true,
+        iconTheme: IconThemeData(color: Color(0xFFD6E1D8)),
         titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
+          color: Color(0xFFE4ECE5),
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2D2D44),
+        fillColor: const Color(0xFF13261B),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: Color(0xFF294834)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: Color(0xFF294834)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6C5CE7), width: 1.5),
+          borderSide: const BorderSide(color: Color(0xFF3EEF7C), width: 1.5),
         ),
-        labelStyle: const TextStyle(color: Colors.white70),
-        hintStyle: const TextStyle(color: Colors.white38),
+        labelStyle: const TextStyle(color: Color(0xFF8DA494)),
+        hintStyle: const TextStyle(color: Color(0xFF5A7563)),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6C5CE7),
-          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFF3EEF7C),
+          foregroundColor: const Color(0xFF06200D),
           minimumSize: const Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -55,11 +56,15 @@ class AppTheme {
         ),
       ),
       cardTheme: CardThemeData(
-        color: const Color(0xFF1E1E2E),
+        color: const Color(0xFF0D1B13),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
+          side: const BorderSide(color: Color(0xFF1C3826), width: 1),
         ),
-        elevation: 4,
+        elevation: 2,
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Color(0xFF3EEF7C),
       ),
     );
   }

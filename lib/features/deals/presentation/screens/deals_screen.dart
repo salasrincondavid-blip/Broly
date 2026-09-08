@@ -58,7 +58,7 @@ class _DealsScreenState extends State<DealsScreen> {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.local_offer, color: Color(0xFF00CEC9)),
+            Icon(Icons.local_offer, color: Color(0xFF3EEF7C)),
             SizedBox(width: 8),
             Text('Ofertas Gamer'),
           ],
@@ -86,10 +86,10 @@ class _DealsScreenState extends State<DealsScreen> {
               onSubmitted: (value) => _fetchDeals(title: value),
               decoration: InputDecoration(
                 hintText: 'Buscar juego en oferta...',
-                prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                prefixIcon: const Icon(Icons.search, color: Color(0xFF8DA494)),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.white70),
+                        icon: const Icon(Icons.clear, color: Color(0xFF8DA494)),
                         onPressed: () {
                           _searchController.clear();
                           _fetchDeals();
@@ -103,7 +103,7 @@ class _DealsScreenState extends State<DealsScreen> {
               child: _isLoading
                   ? const Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xFF6C5CE7),
+                        color: Color(0xFF3EEF7C),
                       ),
                     )
                   : _errorMessage != null
@@ -131,6 +131,8 @@ class _DealsScreenState extends State<DealsScreen> {
                               ),
                             )
                           : RefreshIndicator(
+                              color: const Color(0xFF3EEF7C),
+                              backgroundColor: const Color(0xFF0D1B13),
                               onRefresh: () =>
                                   _fetchDeals(title: _searchController.text),
                               child: ListView.builder(

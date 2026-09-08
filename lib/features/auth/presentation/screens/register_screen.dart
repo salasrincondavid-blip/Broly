@@ -18,8 +18,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Cuenta creada exitosamente. ¡Inicia sesión!'),
-          backgroundColor: Color(0xFF6C5CE7),
+          content: Text(
+            'Cuenta creada exitosamente. ¡Inicia sesión!',
+            style: TextStyle(color: Color(0xFF3EEF7C), fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Color(0xFF182F22),
         ),
       );
       Navigator.pop(context);
