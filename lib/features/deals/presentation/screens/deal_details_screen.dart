@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
+import 'package:broly_1_1/features/deals/data/models/store_helper.dart';
 
 class DealDetailsScreen extends StatefulWidget {
   final DealModel deal;
@@ -16,10 +17,8 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
 
   Future<void> _launchUri(Uri uri) async {
     try {
-      // Intentar primero con aplicación externa (navegador predeterminado)
       final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!launched) {
-        // Fallback a modo por defecto de la plataforma
         await launchUrl(uri, mode: LaunchMode.platformDefault);
       }
     } catch (_) {
@@ -39,24 +38,22 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
   }
 
   Future<void> _openStoreUrl(BuildContext context) async {
-    // 1. Intentar enlace de CheapShark si existe dealID
     if (widget.deal.dealID.isNotEmpty) {
       final cheapSharkUri = Uri.parse('https://www.cheapshark.com/redirect?dealID=${widget.deal.dealID}');
       try {
         final launched = await launchUrl(cheapSharkUri, mode: LaunchMode.externalApplication);
         if (launched) return;
-      } catch (_) {
-        // Continuar al diálogo de opciones alternativas
-      }
+      } catch (_) {}
     }
 
-    // 2. Si falla o no hay dealID, mostrar opciones de compra directas
     if (context.mounted) {
       _showStoreOptions(context);
     }
   }
 
   void _showStoreOptions(BuildContext context) {
+    final storeName = StoreHelper.getStoreName(widget.deal.storeID);
+
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF0D1B13),
@@ -76,7 +73,7 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
                   const Icon(Icons.storefront, color: Color(0xFF3EEF7C)),
                   const SizedBox(width: 10),
                   Text(
-                    'Opciones para comprar',
+                    'Opciones para comprar en $storeName',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -95,8 +92,8 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
                   ),
                   child: const Icon(Icons.open_in_browser, color: Color(0xFF3EEF7C)),
                 ),
-                title: const Text('Oferta en CheapShark (Redirigir)', style: TextStyle(color: Colors.white)),
-                subtitle: const Text('Enlace directo con descuento aplicado', style: TextStyle(color: Color(0xFF8DA494), fontSize: 12)),
+                title: Text('Ir a $storeName (Enlace Oficial)', style: const TextStyle(color: Colors.white)),
+                subtitle: const Text('Redirección directa a la oferta original', style: TextStyle(color: Color(0xFF8DA494), fontSize: 12)),
                 onTap: () {
                   Navigator.pop(ctx);
                   final uri = Uri.parse('https://www.cheapshark.com/redirect?dealID=${widget.deal.dealID}');
@@ -111,31 +108,13 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
                     color: const Color(0xFF13261B),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.videogame_asset, color: Color(0xFF66C0F4)),
-                ),
-                title: const Text('Buscar en Steam Store', style: TextStyle(color: Colors.white)),
-                subtitle: const Text('Página oficial de la tienda Steam', style: TextStyle(color: Color(0xFF8DA494), fontSize: 12)),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  final uri = Uri.parse('https://store.steampowered.com/search/?term=${Uri.encodeComponent(widget.deal.title)}');
-                  _launchUri(uri);
-                },
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF13261B),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: const Icon(Icons.search, color: Color(0xFFFFB800)),
                 ),
-                title: const Text('Buscar en Google Shopping / Web', style: TextStyle(color: Colors.white)),
-                subtitle: const Text('Comparar en todas las tiendas', style: TextStyle(color: Color(0xFF8DA494), fontSize: 12)),
+                title: const Text('Buscar en Google / Web', style: TextStyle(color: Colors.white)),
+                subtitle: const Text('Comparar en más tiendas', style: TextStyle(color: Color(0xFF8DA494), fontSize: 12)),
                 onTap: () {
                   Navigator.pop(ctx);
-                  final uri = Uri.parse('https://www.google.com/search?q=${Uri.encodeComponent('${widget.deal.title} comprar videojuego oferta')}');
+                  final uri = Uri.parse('https://www.google.com/search?q=${Uri.encodeComponent('${widget.deal.title} $storeName comprar oferta')}');
                   _launchUri(uri);
                 },
               ),
@@ -376,6 +355,53 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
                           ),
                           const SizedBox(height: 20),
 
+                          // Tienda que vende la oferta
+                          Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF11261B),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: const Color(0xFF3EEF7C).withValues(alpha: 0.3)),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF3EEF7C).withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Icon(Icons.storefront_rounded, color: Color(0xFF3EEF7C), size: 24),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Tienda de la oferta',
+                                        style: TextStyle(
+                                          color: Color(0xFF8DA494),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        StoreHelper.getStoreName(deal.storeID),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
                           // Métricas y Calificaciones
                           const Text(
                             'Información de la oferta',
@@ -389,11 +415,11 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
 
                           Row(
                             children: [
-                              // Calificación Steam
+                              // Calificación Steam (Comunidad PC)
                               Expanded(
                                 child: _buildInfoCard(
                                   icon: Icons.thumb_up_alt_outlined,
-                                  title: 'Opiniones Steam',
+                                  title: 'Rating PC (Steam)',
                                   value: deal.steamRatingPercent != '0'
                                       ? '${deal.steamRatingPercent}%'
                                       : 'N/D',
@@ -422,14 +448,14 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: const Color(0xFF1C3826)),
                             ),
-                            child: const Row(
+                            child: Row(
                               children: [
-                                Icon(Icons.verified_outlined, color: Color(0xFF3EEF7C), size: 24),
-                                SizedBox(width: 12),
+                                const Icon(Icons.verified_outlined, color: Color(0xFF3EEF7C), size: 24),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
-                                    'Claves 100% legítimas directas de tiendas autorizadas por CheapShark.',
-                                    style: TextStyle(
+                                    'Clave digital 100% oficial vendida directamente por ${StoreHelper.getStoreName(deal.storeID)}.',
+                                    style: const TextStyle(
                                       color: Color(0xFFB0C4B5),
                                       fontSize: 13,
                                       height: 1.3,

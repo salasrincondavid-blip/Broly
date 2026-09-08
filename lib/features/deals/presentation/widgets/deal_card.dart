@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
+import 'package:broly_1_1/features/deals/data/models/store_helper.dart';
 import 'package:broly_1_1/features/deals/presentation/screens/deal_details_screen.dart';
 
 class DealCard extends StatelessWidget {
@@ -18,6 +19,8 @@ class DealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storeName = StoreHelper.getStoreName(deal.storeID);
+
     return Card(
       margin: const EdgeInsets.only(bottom: 14),
       clipBehavior: Clip.antiAlias,
@@ -56,6 +59,21 @@ class DealCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.storefront_outlined, size: 13, color: Color(0xff3eef7c)),
+                        const SizedBox(width: 4),
+                        Text(
+                          storeName,
+                          style: const TextStyle(
+                            color: Color(0xff8da494),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 6),
                     Row(

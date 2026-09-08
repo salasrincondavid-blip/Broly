@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/deals/presentation/screens/deals_screen.dart';
+import 'package:broly_1_1/features/deals/presentation/screens/legendary_search_screen.dart';
 import 'package:broly_1_1/features/home/presentation/widgets/home_view.dart';
 import 'package:broly_1_1/features/auth/presentation/screens/login_screen.dart';
 
@@ -30,7 +31,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       case 2:
         return _buildFavoritesTab();
       case 3:
-        return const DealsScreen();
+        return const LegendarySearchScreen();
       default:
         return HomeView(
           onSearchTap: () => _navigateToTab(1),
@@ -127,8 +128,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           currentIndex: _selectedIndex,
           selectedItemColor: const Color(0xff3eef7c),
           unselectedItemColor: const Color(0xff8da494),
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          unselectedLabelStyle: const TextStyle(fontSize: 12),
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          unselectedLabelStyle: const TextStyle(fontSize: 11),
           type: BottomNavigationBarType.fixed,
           onTap: _navigateToTab,
           items: const [
@@ -148,8 +149,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               label: 'Favoritos',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search_rounded),
-              label: 'Buscar',
+              icon: Icon(Icons.auto_awesome_rounded),
+              activeIcon: Icon(Icons.auto_awesome),
+              label: 'Descuentos Legendarios',
             ),
           ],
         ),
