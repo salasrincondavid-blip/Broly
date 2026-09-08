@@ -13,6 +13,10 @@
 migrate_working_dir/
 WhatsApp Image*.jpeg
 
+# Environment variables (Credentials & Secrets)
+.env
+!.env.example
+
 # IntelliJ related
 *.iml
 *.ipr

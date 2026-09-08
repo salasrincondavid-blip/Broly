@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:broly_1_1/core/constants/supabase_constants.dart';
 import 'package:broly_1_1/core/theme/app_theme.dart';
@@ -6,6 +7,13 @@ import 'package:broly_1_1/features/auth/presentation/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Cargar variables de entorno desde .env
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("Advertencia: No se pudo cargar el archivo .env: $e");
+  }
 
   // Inicialización de Supabase
   if (SupabaseConstants.url.startsWith('https://') &&
