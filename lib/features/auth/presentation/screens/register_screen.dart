@@ -14,20 +14,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
-  void _handleRegister() {
+  Future<void> _handleRegister() async {
+    if (_isLoading) return;
     if (_formKey.currentState?.validate() ?? false) {
-      AuthService.instance.login(_emailController.text, _passwordController.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Cuenta creada exitosamente en memoria.',
-            style: TextStyle(color: Color(0xFF3EEF7C), fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Color(0xFF182F22),
-        ),
+      setState(() => _isLoading = true);
+
+      final error = await AuthService.instance.register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
-      Navigator.pop(context);
+
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              error,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: const Color(0xFF8B0000),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              '¡Cuenta creada exitosamente en Supabase!',
+              style: TextStyle(color: Color(0xFF3EEF7C), fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Color(0xFF182F22),
+          ),
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -97,8 +121,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 28),
                 ElevatedButton(
-                  onPressed: _handleRegister,
-                  child: const Text('Registrarse'),
+                  onPressed: _isLoading ? null : _handleRegister,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                          ),
+                        )
+                      : const Text('Registrarse'),
                 ),
               ],
             ),

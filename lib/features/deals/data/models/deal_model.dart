@@ -36,4 +36,33 @@ class DealModel {
       storeID: json['storeID'] ?? '1',
     );
   }
+
+  Map<String, dynamic> toSupabaseMap(String userId) {
+    return {
+      'user_id': userId,
+      'deal_id': dealID,
+      'title': title,
+      'sale_price': salePrice,
+      'normal_price': normalPrice,
+      'savings': savings,
+      'thumb': thumb,
+      'steam_rating_percent': steamRatingPercent,
+      'deal_rating': dealRating,
+      'store_id': storeID,
+    };
+  }
+
+  factory DealModel.fromSupabaseMap(Map<String, dynamic> map) {
+    return DealModel(
+      dealID: map['deal_id'] ?? '',
+      title: map['title'] ?? 'Sin título',
+      salePrice: map['sale_price'] ?? '0.00',
+      normalPrice: map['normal_price'] ?? '0.00',
+      savings: map['savings']?.toString() ?? '0',
+      thumb: map['thumb'] ?? '',
+      steamRatingPercent: map['steam_rating_percent'] ?? '0',
+      dealRating: map['deal_rating'] ?? '0',
+      storeID: map['store_id'] ?? '1',
+    );
+  }
 }

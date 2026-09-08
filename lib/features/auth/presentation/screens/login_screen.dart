@@ -13,16 +13,37 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController(text: 'gamer@broly.com');
-  final _passwordController = TextEditingController(text: '123456');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
-  void _handleLogin() {
+  Future<void> _handleLogin() async {
+    if (_isLoading) return;
     if (_formKey.currentState?.validate() ?? false) {
-      AuthService.instance.login(_emailController.text, _passwordController.text);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
+      setState(() => _isLoading = true);
+      final error = await AuthService.instance.login(
+        _emailController.text,
+        _passwordController.text,
       );
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              error,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: const Color(0xFF8B0000),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
+        );
+      }
     }
   }
 
@@ -99,8 +120,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: _handleLogin,
-                    child: const Text('Iniciar Sesión'),
+                    onPressed: _isLoading ? null : _handleLogin,
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                            ),
+                          )
+                        : const Text('Iniciar Sesión'),
                   ),
                   const SizedBox(height: 16),
                   Row(
