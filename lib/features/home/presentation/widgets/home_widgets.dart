@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
+import 'package:broly_1_1/features/deals/presentation/widgets/favorite_button.dart';
 
 /// Insignia de porcentaje de descuento reutilizable.
 class DiscountBadge extends StatelessWidget {
@@ -154,6 +155,18 @@ class FeaturedGameCard extends StatelessWidget {
                   ),
                 ),
               ),
+              // Botón de Favoritos superpuesto
+              Positioned(
+                top: 8,
+                left: 8,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    shape: BoxShape.circle,
+                  ),
+                  child: FavoriteButton(deal: deal, iconSize: 20),
+                ),
+              ),
               if (deal.savings != '0')
                 Positioned(
                   top: 10,
@@ -239,6 +252,18 @@ class HorizontalDealCard extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     child: GameImage(deal.thumb),
+                  ),
+                ),
+                // Botón de Favorito
+                Positioned(
+                  top: 4,
+                  left: 4,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black45,
+                      shape: BoxShape.circle,
+                    ),
+                    child: FavoriteButton(deal: deal, iconSize: 16, padding: const EdgeInsets.all(4)),
                   ),
                 ),
                 if (deal.savings != '0')
@@ -341,7 +366,9 @@ class RecentGameRow extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
+            FavoriteButton(deal: deal, iconSize: 20),
+            const SizedBox(width: 6),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

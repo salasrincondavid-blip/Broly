@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
 import 'package:broly_1_1/features/deals/data/models/store_helper.dart';
 import 'package:broly_1_1/features/deals/presentation/screens/deal_details_screen.dart';
+import 'package:broly_1_1/features/deals/presentation/widgets/favorite_button.dart';
 
 class DealCard extends StatelessWidget {
   final DealModel deal;
@@ -118,7 +119,8 @@ class DealCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_forward_ios_rounded, color: Color(0xff3eef7c), size: 16),
+              const SizedBox(width: 6),
+              FavoriteButton(deal: deal, iconSize: 24),
             ],
           ),
         ),

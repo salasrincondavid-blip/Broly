@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:broly_1_1/features/auth/data/services/auth_service.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
 import 'package:broly_1_1/features/deals/data/models/store_helper.dart';
 
@@ -13,8 +14,6 @@ class DealDetailsScreen extends StatefulWidget {
 }
 
 class _DealDetailsScreenState extends State<DealDetailsScreen> {
-  bool _isFavorite = false;
-
   Future<void> _launchUri(Uri uri) async {
     try {
       final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -145,25 +144,30 @@ class _DealDetailsScreenState extends State<DealDetailsScreen> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _isFavorite ? const Color(0xFFFF5252) : const Color(0xFFD6E1D8),
-            ),
-            tooltip: _isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos',
-            onPressed: () {
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 1),
-                  backgroundColor: const Color(0xFF13261B),
-                  content: Text(
-                    _isFavorite ? '¡Agregado a favoritos!' : 'Eliminado de favoritos',
-                    style: const TextStyle(color: Color(0xFF3EEF7C)),
-                  ),
+          ListenableBuilder(
+            listenable: AuthService.instance,
+            builder: (context, _) {
+              final isFav = AuthService.instance.isFavorite(deal.dealID);
+              return IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: isFav ? const Color(0xFFFF5252) : const Color(0xFFD6E1D8),
                 ),
+                tooltip: isFav ? 'Quitar de favoritos' : 'Agregar a favoritos',
+                onPressed: () {
+                  final added = AuthService.instance.toggleFavorite(deal);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 1),
+                      backgroundColor: const Color(0xFF13261B),
+                      content: Text(
+                        added ? '¡Agregado a favoritos!' : 'Eliminado de favoritos',
+                        style: const TextStyle(color: Color(0xFF3EEF7C)),
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),

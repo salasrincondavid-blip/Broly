@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:broly_1_1/features/auth/data/services/auth_service.dart';
 import 'package:broly_1_1/features/auth/presentation/widgets/auth_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -16,10 +17,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _handleRegister() {
     if (_formKey.currentState?.validate() ?? false) {
+      AuthService.instance.login(_emailController.text, _passwordController.text);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Cuenta creada exitosamente. ¡Inicia sesión!',
+            'Cuenta creada exitosamente en memoria.',
             style: TextStyle(color: Color(0xFF3EEF7C), fontWeight: FontWeight.bold),
           ),
           backgroundColor: Color(0xFF182F22),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:broly_1_1/features/auth/data/services/auth_service.dart';
 import 'package:broly_1_1/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:broly_1_1/features/auth/presentation/screens/register_screen.dart';
 import 'package:broly_1_1/features/home/presentation/screens/main_navigation_screen.dart';
@@ -12,12 +13,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'gamer@broly.com');
+  final _passwordController = TextEditingController(text: '123456');
 
   void _handleLogin() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Simular login exitoso e ir a la página principal con navegación
+      AuthService.instance.login(_emailController.text, _passwordController.text);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
