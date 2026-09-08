@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:broly_1_1/features/deals/data/datasources/cheapshark_remote_datasource.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
+import 'package:broly_1_1/features/deals/presentation/screens/deal_details_screen.dart';
 import 'package:broly_1_1/features/home/presentation/widgets/home_widgets.dart';
 
 class HomeView extends StatefulWidget {
@@ -32,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
     });
 
     try {
-      final deals = await _dataSource.getDeals(pageSize: 30);
+      final deals = await _dataSource.getDeals(pageSize: 10);
       if (mounted) {
         setState(() {
           _deals = deals;
@@ -49,17 +49,13 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Future<void> _openDealUrl(String dealId) async {
-    final url = Uri.parse('https://www.cheapshark.com/redirect?dealID=$dealId');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No se pudo abrir el enlace de la oferta')),
-        );
-      }
-    }
+  void _navigateToDetails(DealModel deal) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DealDetailsScreen(deal: deal),
+      ),
+    );
   }
 
   @override
@@ -111,9 +107,9 @@ class _HomeViewState extends State<HomeView> {
     // Dividimos las ofertas en secciones dinámicas
     final featuredDeal = _deals.first;
     final horizontalDeals = _deals.length > 1
-        ? _deals.sublist(1, _deals.length > 7 ? 7 : _deals.length)
+        ? _deals.sublist(1, _deals.length > 5 ? 5 : _deals.length)
         : <DealModel>[];
-    final recentDeals = _deals.length > 7 ? _deals.sublist(7) : <DealModel>[];
+    final recentDeals = _deals.length > 5 ? _deals.sublist(5) : <DealModel>[];
 
     return RefreshIndicator(
       color: const Color(0xff3eef7c),
@@ -130,7 +126,7 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(height: 10),
           FeaturedGameCard(
             deal: featuredDeal,
-            onTap: () => _openDealUrl(featuredDeal.dealID),
+            onTap: () => _navigateToDetails(featuredDeal),
           ),
           const SizedBox(height: 22),
 
@@ -154,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
                     margin: const EdgeInsets.only(right: 12),
                     child: HorizontalDealCard(
                       deal: deal,
-                      onTap: () => _openDealUrl(deal.dealID),
+                      onTap: () => _navigateToDetails(deal),
                     ),
                   );
                 },
@@ -170,7 +166,7 @@ class _HomeViewState extends State<HomeView> {
             ...recentDeals.map(
               (deal) => RecentGameRow(
                 deal: deal,
-                onTap: () => _openDealUrl(deal.dealID),
+                onTap: () => _navigateToDetails(deal),
               ),
             ),
           ],

@@ -32,7 +32,7 @@ class _DealsScreenState extends State<DealsScreen> {
     });
 
     try {
-      final deals = await _dataSource.getDeals(title: title);
+      final deals = await _dataSource.getDeals(title: title, pageSize: 10);
       setState(() {
         _deals = deals;
         _isLoading = false;

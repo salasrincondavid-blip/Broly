@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:broly_1_1/features/deals/data/models/deal_model.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:broly_1_1/features/deals/presentation/screens/deal_details_screen.dart';
 
 class DealCard extends StatelessWidget {
   final DealModel deal;
 
   const DealCard({super.key, required this.deal});
 
-  Future<void> _openDealUrl(BuildContext context) async {
-    final url = Uri.parse('https://www.cheapshark.com/redirect?dealID=${deal.dealID}');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No se pudo abrir el enlace de la oferta')),
-        );
-      }
-    }
+  void _navigateToDetails(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DealDetailsScreen(deal: deal),
+      ),
+    );
   }
 
   @override
@@ -26,7 +22,7 @@ class DealCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => _openDealUrl(context),
+        onTap: () => _navigateToDetails(context),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(

@@ -12,7 +12,7 @@ class CheapSharkRemoteDataSource {
   Future<List<DealModel>> getDeals({
     String? title,
     String sortBy = 'Savings',
-    int pageSize = 20,
+    int pageSize = 10,
   }) async {
     final queryParams = {
       'sortBy': sortBy,
