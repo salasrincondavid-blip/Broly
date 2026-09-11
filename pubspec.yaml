@@ -46,6 +46,6 @@ flutter:
   
   uses-material-design: true
   assets:
-    - assets/image_pathges/logo.jpeg
+    - assets/images/logo.jpeg
 
   
